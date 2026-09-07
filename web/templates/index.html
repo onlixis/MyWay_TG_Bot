@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reminder Mini App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="tabs">
+                <button type="button" class="tab-btn active" data-tab="create-tab">Создать</button>
+                <button type="button" class="tab-btn" data-tab="jobs-tab">Активные</button>
+            </div>
+
+            <section id="create-tab" class="tab-panel active">
+                <h1>Напоминания</h1>
+                <form id="reminder-form" enctype="multipart/form-data">
+                    <div class="saved-configs-block">
+                        <label>Сохранённые конфигурации</label>
+                        <div id="saved-configs-list" class="saved-configs-list" aria-live="polite"></div>
+                        <div class="config-name-row">
+                            <input type="text" id="config-name" name="config-name"
+                                placeholder="Название конфигурации" />
+                        </div>
+                    </div>
+
+                    <div class="recipient-block">
+                        <label for="recipient-input">Получатели</label>
+                        <div class="recipient-controls">
+                            <input type="text" id="recipient-input" name="recipient-input"
+                                placeholder="@friend или chat_id" />
+                            <button type="button" id="add-recipient-btn" class="secondary-btn">Добавить</button>
+                        </div>
+                        <div id="recipient-table" class="recipient-table" aria-live="polite"></div>
+                    </div>
+
+                    <label>
+                        Текст сообщения
+                        <textarea id="message" name="message" rows="5" placeholder="Например: Не забудь позвонить другу"
+                            required></textarea>
+                    </label>
+
+                    <div class="row">
+                        <label>
+                            Интервал (секунды)
+                            <input type="number" id="interval_seconds" name="interval_seconds" min="10" value="3600"
+                                required />
+                        </label>
+
+                        <label>
+                            Повторений
+                            <input type="number" id="repeat_count" name="repeat_count" min="1" value="3" />
+                        </label>
+                    </div>
+
+                    <div class="row">
+                        <label>
+                            Интервал между получателями (сек)
+                            <input type="number" id="recipient_interval_seconds" name="recipient_interval_seconds"
+                                min="0" value="0" />
+                        </label>
+                    </div>
+
+                    <label>
+                        Прикрепить файлы
+                        <input type="file" id="files" name="files" multiple />
+                    </label>
+                    <div id="selected-files" class="selected-files" aria-live="polite"></div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="primary-btn">Создать напоминание</button>
+                        <button type="button" id="save-config-btn" class="secondary-btn">Сохранить конфигурацию</button>
+                        <button type="button" id="clear-all-btn" class="secondary-btn danger-btn">Очистить всё</button>
+                    </div>
+                </form>
+            </section>
+
+            <section id="jobs-tab" class="tab-panel">
+                <div class="jobs-header">
+                    <h2>Активные напоминания</h2>
+                    <button type="button" id="refresh-jobs-btn" class="secondary-btn">Обновить</button>
+                </div>
+                <div id="jobs-list" class="jobs-list" aria-live="polite"></div>
+            </section>
+
+            <div id="status" class="status" aria-live="polite"></div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+</body>
+
+</html>

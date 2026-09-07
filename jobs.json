@@ -1,0 +1,15 @@
+[
+  {
+    "id": "f7a38e8f4d2c4a1c927f925a27f7c79a",
+    "targets": [
+      "chatt_Alliance"
+    ],
+    "message": "фарма",
+    "interval_seconds": 14400,
+    "repeat_count": 200,
+    "recipient_interval_seconds": 0,
+    "file_paths": [],
+    "status": "active",
+    "created_at": "2026-09-07 10:02:41"
+  }
+]

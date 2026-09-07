@@ -1,0 +1,26 @@
+# Python artifacts
+__pycache__/
+*.py[cod]
+
+# Virtual env
+.venv/
+
+# Environment files (keep secrets out of git)
+.env
+.env.*
+
+# Telethon / session files
+*.session
+anon.session
+my_reminder_session.session
+
+# Uploaded files and runtime locks
+uploads/
+.bot.lock
+
+# IDE/editor
+
+# Keep the example env file in the repo
+!.env.example
+.vscode/
+*.swp
