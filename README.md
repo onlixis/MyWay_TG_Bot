@@ -55,16 +55,8 @@ py -m pip install -r requirements.txt
 copy .env.example .env
 ```
 
-4. Fill in `.env` with your values, for example:
+4. Fill in `.env` with your values.
 
-```dotenv
-BOT_TOKEN=123456:ABCDEF
-APP_URL=http://localhost:5000
-PORT=5000
-API_ID=12345678
-API_HASH=your_api_hash_here
-SESSION_NAME=my_reminder_session
-```
 
 ## How to get `API_ID` and `API_HASH`
 
