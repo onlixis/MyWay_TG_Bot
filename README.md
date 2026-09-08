@@ -156,6 +156,14 @@ to send the message later — you are not sending a bot message.
 - In production consider storing uploads in a dedicated folder and adding robust logging
 - For Telegram Mini Apps use HTTPS and a stable public domain
 
+## Server restart behavior
+
+- On startup the server will now restore and start any `active` jobs found in `jobs.json`.
+- If the process is stopped and restarted, previously scheduled active reminders will resume automatically.
+- Note: jobs that were running when the process stopped may resume mid-cycle; long intervals keep the Telethon client connected between sends and network interruptions may still occur. If a connection fails, the job will log the error and attempt no automatic reconnection beyond Telethon's own behavior.
+
+Recommendation: for production use consider adding monitoring and persistent worker supervisors (systemd, docker restart policies, or a process manager) to keep the service running and ensure reminders continue on restarts.
+
 ---
 
 If you want, I can also add a short English usage section to the front page of the mini-app or

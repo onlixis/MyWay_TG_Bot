@@ -19,6 +19,10 @@ from telethon import TelegramClient
 load_dotenv()
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
+# Suppress verbose Telethon and Telegram library logs
+logging.getLogger("telethon").setLevel(logging.WARNING)
+logging.getLogger("telegram").setLevel(logging.WARNING)
+logging.getLogger("telegram.ext").setLevel(logging.WARNING)
 
 BOT_TOKEN = os.getenv("BOT_TOKEN", "")
 APP_URL = os.getenv("APP_URL", "http://localhost:5000")
@@ -266,8 +270,8 @@ def create_job(payload: dict, uploaded_files: list[str] | None = None) -> dict:
     jobs.append(job)
     save_jobs(jobs)
 
-    thread = threading.Thread(target=run_job, args=(job,), daemon=True)
-    thread.start()
+    # start background thread to run this job
+    start_job_thread(job)
 
     return job
 
@@ -443,9 +447,33 @@ async def login_account() -> None:
     await client.disconnect()
 
 
+def start_job_thread(job: dict) -> threading.Thread:
+    """Start a daemon thread to run the given job.
+
+    This centralises thread startup so restore logic can reuse it without
+    re-saving jobs to disk.
+    """
+    thread = threading.Thread(target=run_job, args=(job,), daemon=True)
+    thread.start()
+    return thread
+
+
 if __name__ == "__main__":
     ensure_dirs()
     cleanup_completed_jobs()
+
+    # restore any active jobs from jobs.json on startup
+    try:
+        active = load_jobs()
+        if active:
+            logging.info("Restoring %d active job(s) from jobs.json", len(active))
+            for job in active:
+                try:
+                    start_job_thread(job)
+                except Exception:
+                    logging.exception("Failed to restore job %s", job.get('id'))
+    except Exception:
+        logging.exception("Failed while restoring jobs on startup")
 
     if "--login" in sys.argv:
         asyncio.run(login_account())
